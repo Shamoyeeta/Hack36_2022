@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from server.models import Person, Items_listed,borrower
-from server.serializers import ItemSerializer
+# from server.serializers import ItemSerializer
 
 from .serializer import (createPersonSerializer, listPersonSerializer, listListSerializer, updateListSerializer,
                          createListSerializer, listBorrowerSerializer, createBorrowerSerializer)
@@ -64,11 +64,11 @@ class createBorrowAPIView(CreateAPIView):
     serializer_class = createBorrowerSerializer
 
 
-@api_view(['GET'])
-def getData(request):
-    personal_data= Person.objects.get()
-    serializer= ItemSerializer(personal_data)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# def getData(request):
+#     personal_data= Person.objects.get()
+#     serializer= ItemSerializer(personal_data)
+#     return Response(serializer.data)
 
 # Create your views here.
 from django.http import HttpResponse

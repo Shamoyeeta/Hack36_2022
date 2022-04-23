@@ -16,9 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-import hack_server
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('hack_server.api.urls')),
+    path('/', include('server.urls')),
 ]
