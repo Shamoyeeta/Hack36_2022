@@ -44,13 +44,44 @@ def items_posted(request):
          #   form =
 
 
+def customer(request):
+    with connection.cursor() as cursor:
+        query= "SELECT Aadhar_id,email,name, address, phone_no FROM Person where lender_id= user.request.Aadhar_id"
+        cursor.execute(query)
+        row = cursor.fetchone()
+
+
 
 def seller(reqest):
     with connection.cursor() as cursor:
-        query= "SELECT lender_id, item_id FROM Items_listed where lender_id= id_person"
+        query= "SELECT item_id,name, description FROM Items_listed where lender_id= user.request.Aadhar_id"
         cursor.execute(query)
         row = cursor.fetchone()
         all_count, yes_count = row
+
+def items_available(reqest):
+    with connection.cursor() as cursor:
+        query= "SELECT item_id,name, description, loaction, price status FROM Items_listed"
+        cursor.execute(query)
+        row = cursor.fetchone()
+        all_count, yes_count = row
+
+
+def borrowed(reqest):
+    with connection.cursor() as cursor:
+        query= "SELECT item_id,name, borrow_date, return_date, amount FROM borrower where borrow_id= user.request.Aadhar_id"
+        cursor.execute(query)
+        row = cursor.fetchone()
+        all_count, yes_count = row
+
+
+def itembyname(request):
+    with connection.cursor() as cursor:
+        query= "SELECT borrower.item_id, name, amount, FROM borrower,Items_listed where name=user.request.name AND borrower.item_id=Items_listed.item_id"
+        cursor.execute(query)
+        row = cursor.fetchone()
+        all_count, yes_count = row
+
 
 
 
