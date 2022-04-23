@@ -1,18 +1,60 @@
+import http
+from http.client import HTTPResponse
+from msilib.schema import Error
 from django.shortcuts import render
 
-from server.serializers import listPersonSerializer
-from rest_framework.generics import ListAPIView
-from .models import Person
+from server.serializers import (
+    createPersonSerializer,
+    createListSerializer,
+    listPersonSerializer,
+    updateListSerializer,
+    listListSerializer,
+)
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView
+from .models import Person, Items_listed
 
 # Create your views here.
 
 
+class personCreateAPIView(CreateAPIView):
+    queryset = Person.objects.all()
+    serializer_class = createPersonSerializer
+
+
 class personListAPIView(ListAPIView):
     serializer_class = listPersonSerializer
-    queryset = Person.objects.all()
+    #queryset = Person.objects.all()
 
-    def get_queryset(self):
-        return Person.objects.filter()
+    def get_queryset(self, *args, **kwargs):
+        rec_email = self.kwargs.get('email')
+        rec_password = self.kwargs.get('password')
+        curr = Person.objects.filter(email=rec_email)
+        if(curr.count() == 0):
+            return HTTPResponse("User Doesn't Exist")
+        if(curr.password == rec_password):
+            return curr[0]
+        return HTTPResponse("Wrong Password")
+
+
+class itemListAPIView(ListAPIView):
+    serializer_class = listListSerializer
+    #queryset = Items_listed.objects.all()
+
+    def get_queryset(self, *args, **kwargs):
+        id = self.kwargs.get('id')
+        persons = Person.objects.filter(Aadhar_id=id)[0]
+        return Items_listed.objects.filter(lender_id=persons)
+
+
+class itemCreateAPIView(CreateAPIView):
+    queryset = Items_listed.objects.all()
+    serializer_class = createListSerializer
+
+
+class itemUpdateAPIView(RetrieveUpdateAPIView):
+    queryset = Items_listed.objects.all()
+    serializer_class = updateListSerializer
+    lookup_field = 'status'
 
 
 # from django.shortcuts import render
