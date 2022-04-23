@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/classes/person.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class myRegister extends StatefulWidget {
   const myRegister({Key? key}) : super(key: key);
@@ -8,13 +11,35 @@ class myRegister extends StatefulWidget {
 }
 
 class _myRegisterState extends State<myRegister> {
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
+  final TextEditingController _address = TextEditingController();
+  final TextEditingController _fullname = TextEditingController();
+  final TextEditingController _aadhar = TextEditingController();
+  late Person currPer;
+
+  _sendData() async {
+    String jsonBody = jsonEncode(currPer);
+    final encoding = Encoding.getByName('utf-8');
+
+    Response response = await post(
+      Uri.parse('http://127.0.0.1:8000/'),
+      body: jsonBody,
+      encoding: encoding,
+    );
+
+    String? responseBody = response.body;
+    return responseBody;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage(
+            image: AssetImage(
               'assets/login.png',
             ),
             fit: BoxFit.cover,
@@ -42,7 +67,7 @@ class _myRegisterState extends State<myRegister> {
                   const Text(
                     'REGISTER',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 40.0,
                     ),
@@ -152,7 +177,19 @@ class _myRegisterState extends State<myRegister> {
                                 primary: Colors.black,
                                 shape: const StadiumBorder(),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                currPer = Person(
+                                    _fullname.text,
+                                    _aadhar.text,
+                                    _address.text,
+                                    _phone.text,
+                                    _password.text,
+                                    _email.text);
+                                var ans = _sendData();
+
+                                Navigator.pushNamed(context, 'dashboard',
+                                    arguments: Person.fromJson(ans));
+                              },
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -177,7 +214,7 @@ class _myRegisterState extends State<myRegister> {
                             },
                             child: const Text(
                               'Login',
-                              style: const TextStyle(color: Colors.black),
+                              style: TextStyle(color: Colors.black),
                             ),
                           ),
                         ],

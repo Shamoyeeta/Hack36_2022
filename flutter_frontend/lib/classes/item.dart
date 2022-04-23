@@ -11,9 +11,20 @@ class Item {
   double price;
   String location;
   bool status;
+  String type;
 
   Item(this.person, this.itemID, this.itemName, this.description, this.price,
-      this.location, this.status);
+      this.location, this.status, this.type);
+
+  // Item.fromJson(Map<String, dynamic> json)
+  //     : ['lender_id'],
+  //       ['Item_id'],
+  //       ['name'],
+  //       ['description'],
+  //       ['price'],
+  //       ['location'],
+  //       ['status'],
+  //       ['type'],
 
   Map toJson() => {
         'lender_id': person.getAadhar,
@@ -23,5 +34,6 @@ class Item {
         'price': price,
         'location': location,
         'status': status,
+        'type': type,
       };
 }

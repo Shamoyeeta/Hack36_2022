@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
+
+import '../classes/person.dart';
 
 class myLogin extends StatefulWidget {
   const myLogin({Key? key}) : super(key: key);
@@ -8,6 +13,28 @@ class myLogin extends StatefulWidget {
 }
 
 class _myLoginState extends State<myLogin> {
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+
+  _sendData() async {
+    Map<String, dynamic> body = {'email': _email.text, 'pass': _password.text};
+    String jsonBody = jsonEncode((body));
+    final encoding = Encoding.getByName('utf-8');
+
+    Response response = await post(
+      Uri.parse('http://127.0.0.1:8000/'),
+      body: jsonBody,
+      encoding: encoding,
+    );
+
+    int statusCode = response.statusCode;
+    String? responseBody = response.body;
+    if (statusCode == 404) {
+      responseBody = null;
+    }
+    return responseBody;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -15,7 +42,7 @@ class _myLoginState extends State<myLogin> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-              'assets/login.jpg',
+              'assets/login.png',
             ),
             fit: BoxFit.cover,
           ),
@@ -52,6 +79,7 @@ class _myLoginState extends State<myLogin> {
                   child: Column(
                     children: [
                       TextField(
+                        controller: _email,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           fillColor: Colors.grey.shade100,
@@ -63,6 +91,7 @@ class _myLoginState extends State<myLogin> {
                       ),
                       const SizedBox(height: 30.0),
                       TextFormField(
+                        controller: _password,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter the password';
@@ -92,7 +121,25 @@ class _myLoginState extends State<myLogin> {
                                 primary: Colors.black,
                                 shape: const StadiumBorder(),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                var ans = _sendData();
+                                if (ans == null) {
+                                  setState(() {
+                                    myLogin();
+                                    Fluttertoast.showToast(
+                                        msg: "Invalid credentials",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  });
+                                } else {
+                                  Navigator.pushNamed(context, 'dashboard',
+                                      arguments: Person.fromJson(ans));
+                                }
+                              },
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

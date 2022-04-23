@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Person {
   String fullname;
   String aadhar;
@@ -11,7 +13,7 @@ class Person {
 
   get getAadhar => this.aadhar;
 
-  Map toJson() => {
+  Map toJson(JsonCodec json) => {
         'Aadhar_id': aadhar,
         'name': fullname,
         'address': address,
@@ -19,4 +21,12 @@ class Person {
         'email': email,
         'password': password, // Todo: Encrypt
       };
+
+  Person.fromJson(Map<String, dynamic> json)
+      : fullname = json['name'],
+        address = json['address'],
+        email = json['email'],
+        phone = json['phone_no'],
+        password = json['password'],
+        aadhar = json['aadhar'];
 }

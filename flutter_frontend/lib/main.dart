@@ -33,7 +33,8 @@ class MyApp extends StatelessWidget {
         'login': (context) => myLogin(),
         'register': (context) => myRegister(),
       },
-      initialRoute: 'login',
+      home: myLogin(),
+      //initialRoute: 'login',
     );
   }
 }
