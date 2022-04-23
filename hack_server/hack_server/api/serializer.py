@@ -6,13 +6,13 @@ from django.contrib.auth.models import User
 class createPersonSerializer(ModelSerializer):
     class Meta:
         model = Person
-        fields = ('Aadhar_id', 'name', 'address', 'phone_no')
+        fields = ('Aadhar_id','email', 'password', 'name', 'address', 'phone_no')
 
 
 class listPersonSerializer(ModelSerializer):
     class Meta:
         model = Person
-        fields = ('Aadhar_id', 'name', 'address', 'phone_no')
+        fields = ('Aadhar_id','email', 'password', 'name', 'address', 'phone_no')
 
 
 class createListSerializer(ModelSerializer):

@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Person(models.Model):
     Aadhar_id = models.IntegerField()
+    email = models.CharField(max_length=1000)
+    password = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=100)
     phone_no = models.IntegerField()
