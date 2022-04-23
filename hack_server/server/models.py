@@ -1,12 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 
 # Create your models here.
 class Person(models.Model):
     Aadhar_id = models.IntegerField()
-    email = models.EmailField(max_length=1000)
-    password = models.CharField(max_length=50)
+    email = models.EmailField(max_length=1000, default="test@test.com")
+    password = models.CharField(max_length=50, default="password")
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=100)
     phone_no = models.IntegerField()
@@ -19,6 +18,7 @@ class Items_listed(models.Model):
     description = models.CharField(max_length=1000)
     price = models.IntegerField()
     location = models.CharField(max_length=1000)
+    type = models.CharField(max_length=50, default="No Category")
     status = models.CharField(max_length=10)
 
 

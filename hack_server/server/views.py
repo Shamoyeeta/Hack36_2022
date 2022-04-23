@@ -1,3 +1,20 @@
+from django.shortcuts import render
+
+from server.serializers import listPersonSerializer
+from rest_framework.generics import ListAPIView
+from .models import Person
+
+# Create your views here.
+
+
+class personListAPIView(ListAPIView):
+    serializer_class = listPersonSerializer
+    queryset = Person.objects.all()
+
+    def get_queryset(self):
+        return Person.objects.filter()
+
+
 # from django.shortcuts import render
 # from django.db import connection
 # from rest_framework.response import Response
