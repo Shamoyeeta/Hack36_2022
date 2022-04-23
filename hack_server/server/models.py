@@ -13,6 +13,7 @@ class Person(models.Model):
 
 class Items_listed(models.Model):
     lender_id = models.ForeignKey(Person, on_delete=models.CASCADE)
+    type=models.CharField(max_length=50)
     Item_id = models.IntegerField()
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
