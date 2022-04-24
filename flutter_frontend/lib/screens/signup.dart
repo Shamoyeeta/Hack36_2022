@@ -24,7 +24,11 @@ class _myRegisterState extends State<myRegister> {
     final encoding = Encoding.getByName('utf-8');
 
     Response response = await post(
-      Uri.parse('http://127.0.0.1:8000/'),
+      Uri.parse('http://127.0.0.1:8000/signUp'),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
       body: jsonBody,
       encoding: encoding,
     );
@@ -187,8 +191,9 @@ class _myRegisterState extends State<myRegister> {
                                     _email.text);
                                 var ans = _sendData();
 
-                                Navigator.pushNamed(context, 'dashboard',
-                                    arguments: Person.fromJson(ans));
+                                //Navigator.pushNamed(context, 'login',
+                                //arguments: Person.fromJson(
+                                //ans as Map<String, dynamic>));
                               },
                               child: Row(
                                 mainAxisAlignment:
